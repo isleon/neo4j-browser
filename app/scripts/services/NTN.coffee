@@ -67,32 +67,20 @@ angular.module('neo4jApp.services')
 
     _login = ->
       q = $q.defer()
-      auth.signin(
-        {
-          authParams: {scope: 'openid offline_access'},
-          icon: 'http://neo4j.com/wp-content/themes/neo4jweb/assets/images/neo4j-logo-2015.png',
-          dict: {
-            signin: {
-              title: 'Sign in'
-            }
-          }
-        }
-      , (profile, token, accessToken, state, refreshToken) ->
-          auth.getToken({
-            api: 'firebase'
-          }).then((delegation) ->
-            q.resolve(
-              profile: profile
-              token: token
-              accessToken: accessToken
-              state: state
-              refreshToken: refreshToken
-              data_token: delegation.id_token
-            )
-          )
-      , (err)->
-        q.reject err
-      )
+      domain = 'https://localhost:9001'
+      win = window.open domain, "loginWindow", "location=0,status=0,scrollbars=0, width=400,height=600"
+      win.moveTo 500, 300
+      window.addEventListener('message',(event) ->
+        clearInterval pollInterval
+        con event.data
+        win.close()
+      , false) 
+      pollInterval = setInterval(()->
+        message = 'Polling for results'
+        win.postMessage message, domain
+      , 6000)
+      con = (response) ->
+        q.resolve response
       q.promise
 
     _refreshTokens = (refreshToken) ->

@@ -124,6 +124,7 @@ angular.module('neo4jApp.services')
           ->
             NTN.login().then((res) ->
               that.persist res
+              that.autoLogin()
               q.resolve(res)
             )
         )
