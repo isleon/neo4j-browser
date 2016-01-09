@@ -1,0 +1,221 @@
+@startuml
+
+'skinparam monochrome true
+'skinparam classBackgroundColor White
+skinparam classArrowColor Black
+skinparam classBorderColor Black
+skinparam stereotypeCBackgroundColor Gray
+'hide members
+hide circle
+
+class D3GraphCtrl #LightGray {
+    -itemMouseOver : attributeHandlerFactory
+    -itemMouseOut : attributeHandlerFactory
+    -onCanvasClicked : attributeHandlerFactory
+    -selectItem : attributeHandlerFactory
+
+    +render(initialGraph)
+    +initGraphView(graph)
+    +getGraphView()
+    +measureSize()
+    +toggleSelection(d)
+    +checkLimitsReached(result)
+    +checkMaxNodesReached(graph)
+
+    -attributeHandlerFactory()
+}
+
+class neoGraph #LightGray {
+    
+}
+
+class directive #LightGray
+class GraphExplorer #LightGray {
+    'constructor($q, Cypher, CypherGraphModel, Settings)
+}
+class CircularLayout #LightGray
+
+neoGraph -r-|> directive
+neoGraph --> D3GraphCtrl
+D3GraphCtrl -r-> graphView
+D3GraphCtrl --> GraphExplorer
+D3GraphCtrl ..> GraphStyle
+D3GraphCtrl --> CircularLayout
+
+class graphView {
+    ~constructor(element, measureSize, @graph, @style)
+    +on(event, callback)
+    +layout(value)
+    +grass(value)
+    +update()
+    +resize()
+    +boundingBox()
+    +collectStats()
+}
+
+graphView -r-> viz
+graphView ..> Graph
+graphView --> layout
+graphView --> GraphStyle
+
+class viz {
+    ~constructor(el, measureSize, graph, layout, style)
+    +trigger()
+    +render()
+    +force
+    -onNodeClick()
+    -onNodeDblClick()
+    -onNodeDragToggle()
+    -onRelationshipClick()
+    -onNodeMouseOver()
+    -onNodeMouseOut()
+    -onRelMouseOver()
+    -onRelMouseOut()
+    -zoomed()
+    -interpolateZoom(translate, scale)
+    -zoomInClick()
+    -zoomOutClick()
+    -zoomClick(element)
+}
+
+viz --> Graph
+viz -r-> GraphStyle
+viz --> layout
+viz --> NeoD3Geometry
+
+class layout {
+    +init(render)
+    +force()
+    +update(graph, size)
+    +drag()
+    -collectStats()
+    -accelerateLayout()
+}
+
+class NeoD3Geometry {
+    ~relationshipRouting : pairwiseArcsRelationshipRouting
+
+    ~constructor(@style)
+    +onGraphChange(graph)
+    +onTick(graph)
+
+    {static} -noEmptyLines(lines)
+    {static} -fitCaptionIntoCircle(node, style)
+    {static} -addShortenedNextWord(line, word, measure)
+
+    {static} -setNodeRadii(nodes)
+    {static} -formatNodeCaptions(nodes)
+    {static} -formatRelationshipCaptions(relationships)
+    {static} -square(distance)
+}
+
+NeoD3Geometry --> Graph
+NeoD3Geometry ..> Node
+NeoD3Geometry ..> Relationship
+
+layout --> Graph
+layout --> Renderer
+
+class GraphStyle #FDCC59 {
+    +defaultSizes
+    +defaultArrayWidths
+    +defaultColors
+
+    ~constructor(storage) : GraphStyle(storage)
+    +forEntity(item)
+    +forNode(node)
+    +forRelationship(rel)
+    +resetToDefault()
+    +toSheet()
+    +importGrass(string)
+    +interpolate(str, item)
+    +toString()
+
+    -selector(item) : Selector
+    -newSelector(item) : Selector
+    -calculateStyle(selector) : StyleElement
+
+    -findAvailableDefaultColor()
+    -setDefaultNodeStyling(selector, item)
+    -getDefaultNodeCaption(item)
+    -changeForSelector(selector, props)
+    -destroyRule(rule)
+    -findRule(selector)
+
+    {static} -nodeSelector(node)
+    {static} -relationshipSelector(rel)
+    {static} -parseSelector(key)
+
+    -loadRules(data)
+    -parse(string)
+    -persist()
+}
+
+class Selector #FDCC59 {
+    ~constructor(selector)
+    +toString()
+}
+
+class StyleRule #FDCC59 {
+    ~constructor(@selector, @props)
+    +matches(selector)
+    +matchesExact(selector)
+}
+
+class StyleElement #FDCC59 {
+    ~constructor(selector, @data)
+    +applyRules(rules)
+    +get(attr)
+}
+
+GraphStyle -r-> Selector
+GraphStyle --> StyleRule
+GraphStyle --> StyleElement
+
+class Graph {
+    ~constructor()
+    +nodes
+    +relationships
+    +groupedRelationships
+    +addNodes(nodes)
+    +addRelationships(relationships)
+    +addInternalRelationships(relationships)
+    +pruneInternalRelationships()
+    +findNode(id)
+    +findNodeNeighbourIds(id)
+    +findRelationship(id)
+}
+
+class Node {
+    ~constructor(@id, @labels, properties)
+    +toJSON()
+    +relationshipCount(graph)
+}
+
+class Relationship {
+    ~constructor(@id, @source, @target, @type, properties)
+    +toJSON()
+    +isLoop()
+}
+
+abstract class Renderer #a1cddb {
+    ~constructor()
+    {abstract} +onGraphChange()
+    {abstract} +onTick()
+}
+
+class nodeOutline #a1cddb
+class nodeCaption #a1cddb
+class nodeRing #a1cddb
+class arrowPath #a1cddb
+class relationshipType #a1cddb
+class relationshipOverlay #a1cddb
+
+Renderer <|-- nodeOutline
+Renderer <|-- nodeCaption
+Renderer <|-- nodeRing
+Renderer <|-- arrowPath
+Renderer <|-- relationshipType
+Renderer <|-- relationshipOverlay
+
+@enduml

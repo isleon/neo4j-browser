@@ -1,0 +1,21 @@
+@startuml
+
+skinparam monochrome true
+'skinparam classBackgroundColor White
+skinparam classArrowColor Black
+skinparam classBorderColor Black
+skinparam stereotypeCBackgroundColor Gray
+'hide members
+hide circle
+
+actor user
+user --> neoGraph : 0 execScript()
+    neoGraph --> D3GraphCtr : 1.render(initialGraph)
+        D3GraphCtr --> graphView : 2 init($element[0], measureSize, graph, GraphStyle)
+            graphView --> layout : 3.1 init()
+            graphView --> viz : 3.2 init(element, measureSize, @graph, layout, @style)
+            graphView --> viz : 3.3 update()
+                viz --> NeoD3Geometry : 3.3.1 onGraphChange()
+                viz --> Renderers : 3.3.2 onGraphChange()
+                viz --> layout : 3.3.3 update()
+@enduml

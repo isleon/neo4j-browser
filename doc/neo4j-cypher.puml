@@ -1,0 +1,43 @@
+@startuml
+
+'skinparam monochrome true
+'skinparam classBackgroundColor White
+skinparam classArrowColor Black
+skinparam classBorderColor Black
+skinparam stereotypeCBackgroundColor Gray
+'hide members
+hide circle
+
+class CypherTransaction {
+    ~constructor()
+    -_requestDone(promise)
+    -_onSuccess()
+    -_onError()
+    -_reset()
+    +begin(query)
+    +execute(query)
+    +commit(query)
+    +rollback()
+}
+
+class CypherService {
+    ~constructor()
+    +profile(query)
+    +send(query)
+    +getTransactionIDs()
+    +transaction()
+    +transactionStarted(id, transaction)
+    +transactionFinished(id)
+    +rollbackAllTransactions()
+}
+
+class CypherResult {
+    ~constructor(@response)
+    +response
+    +rows
+    +columns
+    +isTextOnly
+    -_setStats(@stats)
+}
+
+@enduml
