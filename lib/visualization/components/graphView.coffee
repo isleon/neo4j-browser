@@ -22,8 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 class neo.graphView
   constructor: (element, measureSize, @graph, @style) ->
-    layout = neo.layout.force()
-    @viz = neo.viz(element, measureSize, @graph, layout, @style)
+    # layout = neo.layout.force()
+    @viz = neo.viz(element, measureSize, @graph, @style)
     @callbacks = {}
     callbacks = @callbacks
     @viz.trigger = do ->
@@ -34,10 +34,10 @@ class neo.graphView
     (@callbacks[event] ?= []).push(callback)
     @
 
-  layout: (value) ->
-    return layout unless arguments.length
-    layout = value
-    @
+  # layout: (value) ->
+  #   return layout unless arguments.length
+  #   layout = value
+  #   @
 
   grass: (value) ->
     return @style.toSheet() unless arguments.length

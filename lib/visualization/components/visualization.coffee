@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 'use strict'
 
-neo.viz = (el, measureSize, graph, layout, style) ->
+neo.viz = (el, measureSize, graph, style) ->
   viz =
     style: style
 
@@ -196,6 +196,7 @@ neo.viz = (el, measureSize, graph, layout, style) ->
 
     currentStats.lastFrame = now()
 
+  layout = neo.layout.force()
   force = layout.init(render)
     
   #Add custom drag event listeners

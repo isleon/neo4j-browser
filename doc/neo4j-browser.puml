@@ -45,7 +45,7 @@ D3GraphCtrl --> CircularLayout
 class graphView {
     ~constructor(element, measureSize, @graph, @style)
     +on(event, callback)
-    +layout(value)
+    '+layout(value)
     +grass(value)
     +update()
     +resize()
@@ -55,11 +55,11 @@ class graphView {
 
 graphView -r-> viz
 graphView ..> Graph
-graphView --> layout
+'graphView --> layout
 graphView --> GraphStyle
 
 class viz {
-    ~constructor(el, measureSize, graph, layout, style)
+    ~constructor(el, measureSize, graph, style)
     +trigger()
     +render()
     +force
