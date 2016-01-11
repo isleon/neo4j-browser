@@ -59,10 +59,13 @@ graphView ..> Graph
 graphView --> GraphStyle
 
 class viz {
+    +force
     ~constructor(el, measureSize, graph, style)
     +trigger()
     +render()
-    +force
+    +resize()
+    +boundingBox()
+    +collectStats()
     -onNodeClick()
     -onNodeDblClick()
     -onNodeDragToggle()
