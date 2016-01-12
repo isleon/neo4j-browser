@@ -20,24 +20,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 'use strict'
 
-class neo.layout.force = ->
+class neo.layout.force
   linkDistance = 45
 
   d3force = d3.layout.force()
     .linkDistance((relationship) -> relationship.source.radius + relationship.target.radius + linkDistance)
     .charge(-1000)
+
+  newStatsBucket = ->
+    bucket =
+      layoutTime: 0
+      layoutSteps: 0
+    bucket
+
   currentStats = newStatsBucket()
-  @drag = d3force.drag
 
   constructor: (render) ->
-    accelerateLayout()
-
-  collectStats: ->
-    latestStats = currentStats
-    currentStats = newStatsBucket()
-    latestStats
-
-  accelerateLayout: ->
     maxStepsPerTick = 100
     maxAnimationFramesPerSecond = 60
     maxComputeTime = 1000 / maxAnimationFramesPerSecond
@@ -59,6 +57,8 @@ class neo.layout.force = ->
       render()
       false
 
+  drag: d3force.drag
+
   update: (graph, size) ->
     nodes         = neo.utils.cloneArray(graph.nodes())
     relationships = oneRelationshipPerPairOfNodes(graph)
@@ -75,14 +75,13 @@ class neo.layout.force = ->
     .size(size)
     .start()
 
+  collectStats: ->
+    latestStats = currentStats
+    currentStats = newStatsBucket()
+    latestStats
+
   oneRelationshipPerPairOfNodes = (graph) ->
     (pair.relationships[0] for pair in graph.groupedRelationships())
-
-  newStatsBucket = ->
-    bucket =
-      layoutTime: 0
-      layoutSteps: 0
-    bucket
 
   now = if window.performance and window.performance.now
     () ->
