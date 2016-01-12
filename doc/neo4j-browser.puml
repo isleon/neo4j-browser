@@ -83,15 +83,14 @@ class viz {
 
 viz --> Graph
 viz -r-> GraphStyle
-viz --> layout
+viz --> ForceLayout
 viz --> NeoD3Geometry
 
-class layout {
-    +init(render)
-    +force()
+class ForceLayout {
+    ~constructor(render)
     +update(graph, size)
     +drag()
-    -collectStats()
+    +collectStats()
     -accelerateLayout()
 }
 
@@ -116,8 +115,8 @@ NeoD3Geometry --> Graph
 NeoD3Geometry ..> Node
 NeoD3Geometry ..> Relationship
 
-layout --> Graph
-layout --> Renderer
+ForceLayout --> Graph
+ForceLayout --> Renderer
 
 class GraphStyle #FDCC59 {
     +defaultSizes
