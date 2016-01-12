@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 window.neo = window.neo || {}
 
 neo.models = {}
+neo.layout = {}
 
 neo.renderers =
   node: []

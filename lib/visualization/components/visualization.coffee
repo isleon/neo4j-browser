@@ -196,8 +196,7 @@ neo.viz = (el, measureSize, graph, style) ->
 
     currentStats.lastFrame = now()
 
-  layout = neo.layout.force()
-  force = layout.init(render)
+  force = neo.layout.force(render)
     
   #Add custom drag event listeners
   force.drag().on('dragstart.node', (d) -> 
