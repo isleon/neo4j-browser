@@ -32,6 +32,10 @@ class neoGraph #LightGray {
 class directive #LightGray
 class GraphExplorer #LightGray {
     'constructor($q, Cypher, CypherGraphModel, Settings)
+    +exploreNeighbours(node, graph, withInternalRelationships)
+    ~findNeighbours(node, currentNeighbourIds)
+    ~findNumberOfNeighbours(node)
+    +internalRelationships(graph, existingNodes, newNodes)
 }
 class CircularLayout #LightGray
 

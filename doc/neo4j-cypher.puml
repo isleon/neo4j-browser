@@ -8,27 +8,28 @@ skinparam stereotypeCBackgroundColor Gray
 'hide members
 hide circle
 
-class CypherTransaction {
-    ~constructor()
-    -_requestDone(promise)
-    -_onSuccess()
-    -_onError()
-    -_reset()
-    +begin(query)
-    +execute(query)
-    +commit(query)
-    +rollback()
-}
-
 class CypherService {
     ~constructor()
     +profile(query)
     +send(query)
-    +getTransactionIDs()
-    +transaction()
-    +transactionStarted(id, transaction)
-    +transactionFinished(id)
-    +rollbackAllTransactions()
+    +transaction() : CypherTransaction
+    -transactionStarted(id, transaction)
+    -transactionFinished(id)
+    -rollbackAllTransactions()
+    -getTransactionIDs()
+    -promiseResult()
+}
+
+class CypherTransaction {
+    ~constructor()
+    +begin(query)
+    +execute(query)
+    +commit(query)
+    +rollback()
+    -_requestDone(promise)
+    -_onSuccess()
+    -_onError()
+    -_reset()
 }
 
 class CypherResult {
@@ -39,5 +40,9 @@ class CypherResult {
     +isTextOnly
     -_setStats(@stats)
 }
+
+CypherService --> CypherTransaction
+CypherService --> CypherResult
+'CypherTransaction --> CypherResult
 
 @enduml
