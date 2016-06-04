@@ -13,7 +13,7 @@ class D3GraphCtrl #LightGray {
     -itemMouseOut : attributeHandlerFactory
     -onCanvasClicked : attributeHandlerFactory
     -selectItem : attributeHandlerFactory
-
+    --
     +render(initialGraph)
     +initGraphView(graph)
     +getGraphView()
@@ -21,7 +21,7 @@ class D3GraphCtrl #LightGray {
     +toggleSelection(d)
     +checkLimitsReached(result)
     +checkMaxNodesReached(graph)
-
+    --
     -attributeHandlerFactory()
 }
 
@@ -70,6 +70,7 @@ class viz {
     +resize()
     +boundingBox()
     +collectStats()
+    --
     -onNodeClick()
     -onNodeDblClick()
     -onNodeDragToggle()
@@ -95,24 +96,25 @@ class ForceLayout {
     +update(graph, size)
     +drag()
     +collectStats()
+    --
     -accelerateLayout()
 }
 
 class NeoD3Geometry {
     ~relationshipRouting : pairwiseArcsRelationshipRouting
-
+    --
     ~constructor(@style)
     +onGraphChange(graph)
     +onTick(graph)
-
-    {static} -noEmptyLines(lines)
-    {static} -fitCaptionIntoCircle(node, style)
-    {static} -addShortenedNextWord(line, word, measure)
-
-    {static} -setNodeRadii(nodes)
-    {static} -formatNodeCaptions(nodes)
-    {static} -formatRelationshipCaptions(relationships)
-    {static} -square(distance)
+    --
+    -{static} noEmptyLines(lines)
+    -{static} fitCaptionIntoCircle(node, style)
+    -{static} addShortenedNextWord(line, word, measure)
+    --
+    -{static} setNodeRadii(nodes)
+    -{static} formatNodeCaptions(nodes)
+    -{static} formatRelationshipCaptions(relationships)
+    -{static} square(distance)
 }
 
 NeoD3Geometry --> Graph
@@ -126,7 +128,7 @@ class GraphStyle #FDCC59 {
     +defaultSizes
     +defaultArrayWidths
     +defaultColors
-
+    --
     ~constructor(storage) : GraphStyle(storage)
     +forEntity(item)
     +forNode(node)
@@ -136,22 +138,22 @@ class GraphStyle #FDCC59 {
     +importGrass(string)
     +interpolate(str, item)
     +toString()
-
+    --
     -selector(item) : Selector
     -newSelector(item) : Selector
     -calculateStyle(selector) : StyleElement
-
+    --
     -findAvailableDefaultColor()
     -setDefaultNodeStyling(selector, item)
     -getDefaultNodeCaption(item)
     -changeForSelector(selector, props)
     -destroyRule(rule)
     -findRule(selector)
-
-    {static} -nodeSelector(node)
-    {static} -relationshipSelector(rel)
-    {static} -parseSelector(key)
-
+    --
+    -{static} nodeSelector(node)
+    -{static} relationshipSelector(rel)
+    -{static} parseSelector(key)
+    --
     -loadRules(data)
     -parse(string)
     -persist()
